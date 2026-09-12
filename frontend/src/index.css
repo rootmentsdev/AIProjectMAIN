@@ -43,3 +43,15 @@
   scrollbar-width: none;
 }
 
+/* Hide iOS Safari native video playback and controls overlays */
+video::-webkit-media-controls,
+video::-webkit-media-controls-start-playback-button,
+video::-webkit-media-controls-play-button,
+video::-webkit-media-controls-panel {
+  display: none !important;
+  -webkit-appearance: none !important;
+  opacity: 0 !important;
+  visibility: hidden !important;
+}
+
+

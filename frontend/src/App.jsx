@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import homeVideo from './assets/AI Home Video.mp4';
 import homeImage from './assets/HomeImage.png';
 import home1 from './assets/Home1.png';
@@ -16,6 +16,7 @@ import Footer from './Footer';
 import { HowItWorksVisual } from './AiVisualIllustrations';
 
 export default function App() {
+  const videoRef = useRef(null);
   const [currentPage, setCurrentPage] = useState(() => {
     if (typeof window !== 'undefined') {
       const hash = window.location.hash.replace('#', '');
@@ -44,6 +45,41 @@ export default function App() {
   const [typingLine, setTypingLine] = useState(1); // 1 = line 1, 2 = line 2, 0 = done
   const [isRevealed, setIsRevealed] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
+  // Reliable video autoplay for mobile browsers (iOS Safari / Low Power Mode)
+  useEffect(() => {
+    if (videoRef.current) {
+      videoRef.current.muted = true;
+      videoRef.current.defaultMuted = true;
+      videoRef.current.playsInline = true;
+      videoRef.current.setAttribute('muted', '');
+      videoRef.current.setAttribute('playsinline', '');
+      videoRef.current.setAttribute('webkit-playsinline', 'true');
+      const playPromise = videoRef.current.play();
+      if (playPromise !== undefined) {
+        playPromise.catch(() => {
+          // Autoplay blocked by browser policy (e.g. low power mode)
+        });
+      }
+    }
+
+    const unlockPlay = () => {
+      if (videoRef.current && videoRef.current.paused) {
+        videoRef.current.muted = true;
+        videoRef.current.play().catch(() => {});
+      }
+    };
+
+    window.addEventListener('touchstart', unlockPlay, { once: true, passive: true });
+    window.addEventListener('click', unlockPlay, { once: true, passive: true });
+    window.addEventListener('scroll', unlockPlay, { once: true, passive: true });
+
+    return () => {
+      window.removeEventListener('touchstart', unlockPlay);
+      window.removeEventListener('click', unlockPlay);
+      window.removeEventListener('scroll', unlockPlay);
+    };
+  }, []);
 
   useEffect(() => {
     const handleHashChange = () => {
@@ -79,15 +115,6 @@ export default function App() {
   };
 
   useEffect(() => {
-    // Respect user's motion preferences
-    if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-      setText1(fullLine1);
-      setText2(fullLine2);
-      setTypingLine(0);
-      setIsRevealed(true);
-      return;
-    }
-
     let i = 0;
     let j = 0;
     let timer;
@@ -236,12 +263,19 @@ export default function App() {
         {/* Background Video with Bloom Transition - Fills full screen */}
         <div className="absolute inset-0 flex items-center justify-center pointer-events-none select-none z-0 overflow-hidden">
           <video
+            ref={videoRef}
             autoPlay
             loop
             muted
             playsInline
+            webkit-playsinline="true"
+            x5-playsinline="true"
+            controls={false}
+            disablePictureInPicture
+            disableRemotePlayback
+            preload="auto"
             poster={homeImage}
-            className={`w-full h-full object-cover object-center transition-all duration-1000 ease-out ${
+            className={`w-full h-full object-cover object-center transition-all duration-1000 ease-out pointer-events-none select-none ${
               isRevealed ? 'opacity-90 scale-100 blur-0' : 'opacity-0 scale-95 blur-sm'
             }`}
           >
