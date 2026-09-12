@@ -1,0 +1,45 @@
+@import "tailwindcss";
+
+@font-face {
+  font-family: 'Stack Sans Text';
+  src: url('./assets/stack-sans-text_5.3.0_latin-wght-normal.woff2') format('woff2');
+  font-weight: 200 700;
+  font-display: swap;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Stack Sans Headline';
+  src: url('./assets/variable/stack-sans-headline-latin-wght-normal.woff2') format('woff2');
+  font-weight: 200 700;
+  font-display: swap;
+  font-style: normal;
+}
+
+@theme {
+  --font-headline: 'Stack Sans Headline', system-ui, -apple-system, sans-serif;
+  --font-text: 'Stack Sans Text', 'Stack Sans Headline', system-ui, -apple-system, sans-serif;
+}
+
+@keyframes cursor-blink {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+}
+
+.animate-cursor {
+  animation: cursor-blink 1.16s ease-in-out infinite;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
