@@ -44,38 +44,47 @@ export default function App() {
   const [text2, setText2] = useState('');
   const [typingLine, setTypingLine] = useState(1); // 1 = line 1, 2 = line 2, 0 = done
   const [isRevealed, setIsRevealed] = useState(false);
+  const [isVideoPlaying, setIsVideoPlaying] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   // Reliable video autoplay for mobile browsers (iOS Safari / Low Power Mode)
   useEffect(() => {
-    if (videoRef.current) {
-      videoRef.current.muted = true;
-      videoRef.current.defaultMuted = true;
-      videoRef.current.playsInline = true;
-      videoRef.current.setAttribute('muted', '');
-      videoRef.current.setAttribute('playsinline', '');
-      videoRef.current.setAttribute('webkit-playsinline', 'true');
-      const playPromise = videoRef.current.play();
+    const video = videoRef.current;
+    if (video) {
+      video.muted = true;
+      video.defaultMuted = true;
+      video.playsInline = true;
+      video.setAttribute('muted', '');
+      video.setAttribute('playsinline', '');
+      video.setAttribute('webkit-playsinline', 'true');
+      const playPromise = video.play();
       if (playPromise !== undefined) {
-        playPromise.catch(() => {
-          // Autoplay blocked by browser policy (e.g. low power mode)
-        });
+        playPromise
+          .then(() => setIsVideoPlaying(true))
+          .catch(() => {
+            // Low Power Mode or Safari policy restricted autoplay
+          });
       }
     }
 
     const unlockPlay = () => {
-      if (videoRef.current && videoRef.current.paused) {
+      if (videoRef.current) {
         videoRef.current.muted = true;
-        videoRef.current.play().catch(() => {});
+        videoRef.current
+          .play()
+          .then(() => setIsVideoPlaying(true))
+          .catch(() => {});
       }
     };
 
     window.addEventListener('touchstart', unlockPlay, { once: true, passive: true });
+    window.addEventListener('touchend', unlockPlay, { once: true, passive: true });
     window.addEventListener('click', unlockPlay, { once: true, passive: true });
     window.addEventListener('scroll', unlockPlay, { once: true, passive: true });
 
     return () => {
       window.removeEventListener('touchstart', unlockPlay);
+      window.removeEventListener('touchend', unlockPlay);
       window.removeEventListener('click', unlockPlay);
       window.removeEventListener('scroll', unlockPlay);
     };
@@ -260,10 +269,22 @@ export default function App() {
 
       {/* Hero Section - Full Screen Viewport */}
       <main className="relative min-h-[calc(100vh-5rem)] flex flex-col items-center justify-center px-6 sm:px-10 lg:px-16 py-12 text-center overflow-hidden">
-        {/* Background Video with Bloom Transition - Fills full screen */}
+        {/* Background Visual (Image poster + Seamless Autoplay Video) */}
         <div className="absolute inset-0 flex items-center justify-center pointer-events-none select-none z-0 overflow-hidden">
+          {/* Base Poster Image - Crisp, clean, never shows any browser play icon */}
+          <img
+            src={homeImage}
+            alt=""
+            aria-hidden="true"
+            className={`w-full h-full object-cover object-center transition-all duration-1000 ease-out ${
+              isRevealed ? 'opacity-90 scale-100 blur-0' : 'opacity-0 scale-95 blur-sm'
+            }`}
+          />
+
+          {/* Background Video - Fades in automatically once playback starts */}
           <video
             ref={videoRef}
+            src={homeVideo}
             autoPlay
             loop
             muted
@@ -274,13 +295,18 @@ export default function App() {
             disablePictureInPicture
             disableRemotePlayback
             preload="auto"
-            poster={homeImage}
-            className={`w-full h-full object-cover object-center transition-all duration-1000 ease-out pointer-events-none select-none ${
-              isRevealed ? 'opacity-90 scale-100 blur-0' : 'opacity-0 scale-95 blur-sm'
+            onPlaying={() => setIsVideoPlaying(true)}
+            onPause={() => setIsVideoPlaying(false)}
+            onLoadedData={() => {
+              if (videoRef.current) {
+                videoRef.current.play().then(() => setIsVideoPlaying(true)).catch(() => {});
+              }
+            }}
+            className={`absolute inset-0 w-full h-full object-cover object-center transition-opacity duration-700 ease-out pointer-events-none select-none ${
+              isRevealed && isVideoPlaying ? 'opacity-90' : 'opacity-0'
             }`}
-          >
-            <source src={homeVideo} type="video/mp4" />
-          </video>
+          />
+
           {/* Subtle Radial Vignette Gradient for smooth blending and readability */}
           <div
             className={`absolute inset-0 bg-gradient-to-t from-black via-black/40 to-black pointer-events-none transition-opacity duration-1000 ${
