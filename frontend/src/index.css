@@ -21,19 +21,126 @@
   --font-text: 'Stack Sans Text', 'Stack Sans Headline', system-ui, -apple-system, sans-serif;
 }
 
+/* ==========================================================================
+   Smooth Animations & Keyframes
+   ========================================================================== */
+
 @keyframes cursor-blink {
-  0%, 100% {
-    opacity: 1;
-  }
-  50% {
-    opacity: 0;
-  }
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
 }
 
 .animate-cursor {
   animation: cursor-blink 1.16s ease-in-out infinite;
 }
 
+/* Gentle floating breathing animation */
+@keyframes float-slow {
+  0%, 100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-10px) rotate(1deg);
+  }
+}
+
+@keyframes float-reverse {
+  0%, 100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  50% {
+    transform: translateY(12px) rotate(-1.5deg);
+  }
+}
+
+.animate-float-slow {
+  animation: float-slow 7s ease-in-out infinite;
+}
+
+.animate-float-reverse {
+  animation: float-reverse 8.5s ease-in-out infinite;
+}
+
+/* Ambient Aurora Glow */
+@keyframes aurora-pulse {
+  0%, 100% {
+    opacity: 0.45;
+    transform: scale(1) translate(0px, 0px);
+  }
+  50% {
+    opacity: 0.75;
+    transform: scale(1.08) translate(-15px, 10px);
+  }
+}
+
+.animate-aurora {
+  animation: aurora-pulse 10s ease-in-out infinite alternate;
+}
+
+/* Shimmer Highlight for Buttons & Badges */
+@keyframes shimmer-slide {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(200%);
+  }
+}
+
+.shimmer-btn {
+  position: relative;
+  overflow: hidden;
+}
+
+.shimmer-btn::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.22) 50%,
+    transparent 100%
+  );
+  transform: skewX(-20deg) translateX(-150%);
+  animation: shimmer-slide 4.5s ease-in-out infinite;
+  pointer-events: none;
+}
+
+/* Radar status ping */
+@keyframes radar-pulse {
+  0% {
+    transform: scale(0.95);
+    box-shadow: 0 0 0 0 rgba(0, 135, 103, 0.5);
+  }
+  70% {
+    transform: scale(1);
+    box-shadow: 0 0 0 10px rgba(0, 135, 103, 0);
+  }
+  100% {
+    transform: scale(0.95);
+    box-shadow: 0 0 0 0 rgba(0, 135, 103, 0);
+  }
+}
+
+.animate-radar {
+  animation: radar-pulse 2.2s infinite cubic-bezier(0.45, 0, 0.55, 1);
+}
+
+/* Smooth Card Hover Lift & Glow */
+.smooth-card {
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.35s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.35s ease;
+}
+
+.smooth-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 30px -10px rgba(0, 135, 103, 0.12), 0 4px 10px -2px rgba(0, 0, 0, 0.04);
+}
+
+/* Scrollbar utilities */
 .no-scrollbar::-webkit-scrollbar {
   display: none;
 }
@@ -54,4 +161,83 @@ video::-webkit-media-controls-panel {
   visibility: hidden !important;
 }
 
+/* Smooth Fade In and Slide for active tab reveal */
+@keyframes fadeInSlide {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
 
+.animate-fade-in {
+  animation: fadeInSlide 0.45s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* Infinite Marquee Animation for Text / Brand Labels */
+@keyframes marquee-slide {
+  0% {
+    transform: translateX(0%);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.animate-marquee {
+  display: flex;
+  width: max-content;
+  animation: marquee-slide 24s linear infinite;
+  will-change: transform;
+}
+
+.animate-marquee:hover {
+  animation-play-state: paused;
+}
+
+/* ==========================================================================
+   Page Switching Transitions (Silky Smooth, Hardware Accelerated 120fps)
+   ========================================================================== */
+
+@keyframes pageTransitionIn {
+  0% {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.page-transition-enter {
+  animation: pageTransitionIn 0.28s cubic-bezier(0.22, 1, 0.36, 1) both;
+  will-change: transform, opacity;
+}
+
+@keyframes topProgressAnim {
+  0% {
+    transform: scaleX(0);
+    opacity: 1;
+  }
+  50% {
+    transform: scaleX(0.7);
+    opacity: 1;
+  }
+  90% {
+    transform: scaleX(0.98);
+    opacity: 0.9;
+  }
+  100% {
+    transform: scaleX(1);
+    opacity: 0;
+  }
+}
+
+.top-route-progress {
+  transform-origin: left;
+  animation: topProgressAnim 0.38s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}

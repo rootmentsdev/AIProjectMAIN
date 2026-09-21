@@ -1,0 +1,22 @@
+.smooth-glow-wrapper {
+  position: relative;
+  width: 100%;
+  min-height: 100%;
+}
+
+.smooth-glow-canvas {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  user-select: none;
+  z-index: 9999;
+}
+
+.smooth-glow-content {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  min-height: 100%;
+}

@@ -1,21 +1,11 @@
 import React, { useState } from 'react';
 import Footer from './Footer';
+import Header from './Header';
 
 export default function AiPricingPage({ onNavigate }) {
   const [isAnnual, setIsAnnual] = useState(true);
   const [sheetsCount, setSheetsCount] = useState(8);
   const [troubleshootingHours, setTroubleshootingHours] = useState(20);
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-
-  const navLinks = [
-    { label: 'About', href: '#about' },
-    { label: 'How it works', href: '#how-it-works' },
-    { label: 'Pricing', href: '#pricing', active: true },
-    { label: 'Blog', href: '#blog' },
-    { label: 'Testimonials', href: '#testimonials' },
-    { label: "FAQ's", href: '#faqs' },
-    { label: 'Contact', href: '#contact' },
-  ];
 
   // Calculated ROI based on hours spent troubleshooting spreadsheets & site issues
   const monthlySavings = Math.round(troubleshootingHours * 4.3 * 65 + sheetsCount * 180);
@@ -81,90 +71,23 @@ export default function AiPricingPage({ onNavigate }) {
 
   return (
     <div className="min-h-screen bg-white text-gray-900 flex flex-col font-text selection:bg-[#008767] selection:text-white">
-      {/* Header */}
-      <header className="w-full border-b border-gray-200 sticky top-0 z-30 bg-white/95 backdrop-blur-md shadow-sm">
-        <div className="max-w-7xl mx-auto px-6 sm:px-12 h-20 flex items-center justify-between">
-          <button
-            type="button"
-            onClick={() => onNavigate && onNavigate('home')}
-            className="text-gray-900 text-base font-bold tracking-wider uppercase cursor-pointer hover:opacity-80 transition-opacity flex items-center gap-2"
-          >
-            <div className="w-7 h-7 rounded bg-[#008767] flex items-center justify-center text-xs font-black text-white">
-              B
-            </div>
-            <span>LOGO HERE</span>
-          </button>
-
-          <nav className="hidden md:flex items-center space-x-8">
-            {navLinks.map((link) => (
-              <button
-                key={link.label}
-                type="button"
-                onClick={() => onNavigate && onNavigate(link.href.replace('#', ''))}
-                className={`text-sm font-semibold transition-colors duration-200 cursor-pointer ${
-                  link.active
-                    ? 'text-gray-900 border-b-2 border-[#008767] pb-1'
-                    : 'text-gray-500 hover:text-black'
-                }`}
-              >
-                {link.label}
-              </button>
-            ))}
-          </nav>
-
-          <div className="hidden sm:flex items-center gap-4">
-            <button
-              type="button"
-              onClick={() => onNavigate && onNavigate('get-started')}
-              className="px-5 py-2 rounded-full bg-[#008767] hover:bg-[#007559] text-white text-xs font-semibold tracking-wide transition-all shadow-[0_0_15px_rgba(0,135,103,0.3)] cursor-pointer"
-            >
-              Get Started
-            </button>
-          </div>
-
-          <div className="md:hidden flex items-center">
-            <button
-              type="button"
-              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="w-10 h-10 flex flex-col items-center justify-center gap-1.5 text-gray-700"
-              aria-label="Toggle Menu"
-            >
-              <span className={`w-5 h-0.5 bg-current transition-all ${mobileMenuOpen ? 'rotate-45 translate-y-2' : ''}`} />
-              <span className={`w-5 h-0.5 bg-current transition-all ${mobileMenuOpen ? 'opacity-0' : ''}`} />
-              <span className={`w-5 h-0.5 bg-current transition-all ${mobileMenuOpen ? '-rotate-45 -translate-y-2' : ''}`} />
-            </button>
-          </div>
-        </div>
-
-        {mobileMenuOpen && (
-          <div className="md:hidden bg-white border-b border-gray-200 px-6 py-6 space-y-3">
-            {navLinks.map((link) => (
-              <button
-                key={link.label}
-                type="button"
-                onClick={() => {
-                  setMobileMenuOpen(false);
-                  if (onNavigate) onNavigate(link.href.replace('#', ''));
-                }}
-                className="block w-full text-left text-base font-semibold text-gray-700 hover:text-black py-2"
-              >
-                {link.label}
-              </button>
-            ))}
-          </div>
-        )}
-      </header>
+      {/* Unified Professional Header */}
+      <Header currentPage="pricing" onNavigate={onNavigate} forceTheme="light" />
 
       {/* Hero Header */}
-      <section className="w-full pt-16 pb-12 px-6 sm:px-10 lg:px-16 bg-white border-b border-gray-100 text-center">
-        <div className="max-w-4xl mx-auto">
+      <section className="w-full pt-16 pb-12 px-6 sm:px-10 lg:px-16 bg-white border-b border-gray-100 text-center relative overflow-hidden">
+        {/* Ambient glow orbs */}
+        <div className="absolute top-0 left-1/3 w-96 h-96 bg-emerald-100/35 rounded-full blur-3xl pointer-events-none animate-aurora" />
+        <div className="absolute -bottom-10 right-10 w-80 h-80 bg-teal-100/25 rounded-full blur-3xl pointer-events-none animate-float-slow" />
+
+        <div className="max-w-4xl mx-auto relative z-10">
           <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-black text-white text-[11px] font-semibold tracking-wider uppercase mb-6 shadow-sm">
-            <span className="w-2 h-2 bg-[#008767] inline-block rounded-[1px]" />
-            <span>SIMPLE, TRANSPARENT PRICING</span>
+            <span className="w-2 h-2 bg-[#008767] inline-block rounded-[1px] animate-radar" />
+            <span>TRANSPARENT VALUE PRICING</span>
           </div>
 
           <h1 className="font-headline font-normal text-4xl sm:text-5xl lg:text-6xl leading-[1.1] tracking-tight text-[#111827] mb-6">
-            Put your Google Sheets, Sites & Tools on AI Autopilot.
+            Predictable Plans for Businesses of Every Scale
           </h1>
 
           <p className="font-text text-base sm:text-lg text-gray-500 leading-relaxed max-w-2xl mx-auto mb-10">
@@ -172,7 +95,7 @@ export default function AiPricingPage({ onNavigate }) {
           </p>
 
           {/* Annual Toggle */}
-          <div className="inline-flex items-center gap-3 p-1.5 rounded-full bg-gray-100 border border-gray-200">
+          <div className="inline-flex items-center gap-3 p-1.5 rounded-full bg-gray-100 border border-gray-200 shadow-inner">
             <button
               type="button"
               onClick={() => setIsAnnual(false)}
@@ -190,7 +113,7 @@ export default function AiPricingPage({ onNavigate }) {
               }`}
             >
               <span>Annual Billing</span>
-              <span className="px-2 py-0.5 rounded-full bg-[#008767] text-[10px] text-white font-bold">
+              <span className="px-2 py-0.5 rounded-full bg-[#008767] text-[10px] text-white font-bold animate-pulse">
                 Save 20%
               </span>
             </button>
@@ -199,19 +122,19 @@ export default function AiPricingPage({ onNavigate }) {
       </section>
 
       {/* Pricing Cards Grid */}
-      <section className="w-full py-16 px-6 sm:px-10 lg:px-16 bg-gray-50/50 border-b border-gray-100">
+      <section className="w-full py-16 px-6 sm:px-10 lg:px-16 bg-gray-50/50 border-b border-gray-100 relative overflow-hidden">
         <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-3 gap-8 items-stretch">
           {plans.map((p, idx) => (
             <div
               key={idx}
-              className={`bg-white rounded-3xl p-8 border flex flex-col justify-between transition-all duration-300 relative ${
+              className={`smooth-card bg-white rounded-3xl p-8 border flex flex-col justify-between relative ${
                 p.popular
-                  ? 'border-[#008767] shadow-xl ring-2 ring-[#008767]/20 scale-[1.02]'
-                  : 'border-gray-200 shadow-sm hover:shadow-md'
+                  ? 'border-[#008767] shadow-xl ring-2 ring-[#008767]/20 scale-[1.02] hover:scale-[1.03]'
+                  : 'border-gray-200 shadow-sm hover:border-[#008767]/30'
               }`}
             >
               {p.popular && (
-                <div className="absolute -top-3.5 left-1/2 -translate-x-1/2 px-4 py-1 rounded-full bg-[#008767] text-white text-[11px] font-bold tracking-wider uppercase shadow-md">
+                <div className="absolute -top-3.5 left-1/2 -translate-x-1/2 px-4 py-1 rounded-full bg-[#008767] text-white text-[11px] font-bold tracking-wider uppercase shadow-md animate-float-slow">
                   Most Popular
                 </div>
               )}
@@ -247,7 +170,7 @@ export default function AiPricingPage({ onNavigate }) {
                 onClick={() => onNavigate && onNavigate(p.ctaType === 'primary' ? 'get-started' : 'contact')}
                 className={`w-full py-3.5 rounded-xl text-xs font-bold transition-all cursor-pointer ${
                   p.ctaType === 'primary'
-                    ? 'bg-[#008767] hover:bg-[#007559] text-white shadow-lg'
+                    ? 'shimmer-btn bg-[#008767] hover:bg-[#007559] text-white shadow-lg shadow-[#008767]/25'
                     : 'bg-black hover:bg-gray-800 text-white'
                 }`}
               >

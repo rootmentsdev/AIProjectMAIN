@@ -1,11 +1,10 @@
 import React, { useState } from 'react';
-import InteractiveDotGrid from './InteractiveDotGrid';
 import Footer from './Footer';
+import Header from './Header';
 import { EngineVisual, SystemConnectorVisual } from './AiVisualIllustrations';
 
 export default function AiBrainPage({ onNavigate }) {
   const [activeStep, setActiveStep] = useState('WELCOME');
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   // Business Form State
   const [formData, setFormData] = useState({
@@ -64,22 +63,7 @@ export default function AiBrainPage({ onNavigate }) {
     }
   };
 
-  const navLinks = [
-    { label: 'About', href: '#about' },
-    { label: 'How it works', href: '#how-it-works' },
-    { label: 'Pricing', href: '#pricing' },
-    { label: 'Blog', href: '#blog' },
-    { label: 'Testimonials', href: '#testimonials' },
-    { label: "FAQ's", href: '#faqs' },
-    { label: 'Contact', href: '#contact' },
-  ];
 
-  const handleNavClick = (href) => {
-    setMobileMenuOpen(false);
-    if (onNavigate) {
-      onNavigate('home', href);
-    }
-  };
 
   const toggleConnection = (id) => {
     setConnectedSystems((prev) => ({
@@ -234,9 +218,6 @@ export default function AiBrainPage({ onNavigate }) {
 
   return (
     <div className="min-h-screen w-full bg-white text-gray-900 relative flex flex-col selection:bg-[#008767] selection:text-white overflow-x-hidden">
-      {/* Seamless Interactive Dot Grid Background */}
-      <InteractiveDotGrid theme="light" />
-
       {/* Floating Left Arrow (Prev Space) */}
       {hasPrevStep && (
         <button
@@ -280,80 +261,7 @@ export default function AiBrainPage({ onNavigate }) {
       )}
 
       {/* Top Header */}
-      <header className="w-full border-b border-gray-100/90 relative z-30 backdrop-blur-[2px]">
-        <div className="max-w-7xl mx-auto px-6 sm:px-12 h-20 flex items-center justify-between">
-          {/* Logo */}
-          <button
-            type="button"
-            onClick={() => onNavigate && onNavigate('home')}
-            className="text-gray-950 text-base font-bold tracking-wider uppercase hover:opacity-80 transition-opacity flex items-center cursor-pointer"
-          >
-            LOGO HERE
-          </button>
-
-          {/* Desktop Navigation */}
-          <nav className="hidden md:flex items-center space-x-8">
-            {navLinks.map((link) => (
-              <button
-                key={link.label}
-                type="button"
-                onClick={() => handleNavClick(link.href)}
-                className="text-sm font-semibold text-gray-500 hover:text-black transition-colors duration-200 cursor-pointer"
-              >
-                {link.label}
-              </button>
-            ))}
-          </nav>
-
-          {/* Mobile Menu Button with Animated Hamburger-to-X */}
-          <div className="md:hidden flex items-center">
-            <button
-              type="button"
-              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="relative w-10 h-10 flex flex-col items-center justify-center gap-1.5 text-gray-800 hover:text-black focus:outline-none rounded-lg transition-colors"
-              aria-label={mobileMenuOpen ? "Close Menu" : "Open Menu"}
-            >
-              <span
-                className={`w-5 h-0.5 bg-current rounded-full transition-all duration-300 transform origin-center ${
-                  mobileMenuOpen ? 'rotate-45 translate-y-2' : ''
-                }`}
-              />
-              <span
-                className={`w-5 h-0.5 bg-current rounded-full transition-all duration-300 ${
-                  mobileMenuOpen ? 'opacity-0 scale-0' : 'opacity-100'
-                }`}
-              />
-              <span
-                className={`w-5 h-0.5 bg-current rounded-full transition-all duration-300 transform origin-center ${
-                  mobileMenuOpen ? '-rotate-45 -translate-y-2' : ''
-                }`}
-              />
-            </button>
-          </div>
-        </div>
-
-        {/* Mobile Navigation Drawer */}
-        <div
-          className={`md:hidden absolute top-20 left-0 w-full bg-white/95 backdrop-blur-2xl border-b border-gray-100 shadow-xl transition-all duration-300 ease-in-out z-40 overflow-hidden ${
-            mobileMenuOpen
-              ? 'max-h-[460px] opacity-100 py-6'
-              : 'max-h-0 opacity-0 py-0 pointer-events-none'
-          }`}
-        >
-          <div className="flex flex-col px-6 space-y-3">
-            {navLinks.map((link) => (
-              <button
-                key={link.label}
-                type="button"
-                onClick={() => handleNavClick(link.href)}
-                className="text-left text-base font-semibold text-gray-700 hover:text-black transition-colors py-2 border-b border-gray-100"
-              >
-                {link.label}
-              </button>
-            ))}
-          </div>
-        </div>
-      </header>
+      <Header currentPage="get-started" onNavigate={onNavigate} forceTheme="light" />
 
       {/* Main Container */}
       <main className="relative z-10 flex-1 flex flex-col items-center pt-8 md:pt-12 pb-24 px-4 sm:px-6 max-w-6xl mx-auto w-full">

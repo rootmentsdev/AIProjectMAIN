@@ -1,21 +1,12 @@
 import React, { useState } from 'react';
 import Footer from './Footer';
+import Header from './Header';
+import { HowItWorksVisual } from './AiVisualIllustrations';
 
 export default function AiHowItWorksPage({ onNavigate }) {
   const [selectedSource, setSelectedSource] = useState('sheets');
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [activeAnalysisStage, setActiveAnalysisStage] = useState(0);
-
-  const navLinks = [
-    { label: 'About', href: '#about' },
-    { label: 'How it works', href: '#how-it-works', active: true },
-    { label: 'Pricing', href: '#pricing' },
-    { label: 'Blog', href: '#blog' },
-    { label: 'Testimonials', href: '#testimonials' },
-    { label: "FAQ's", href: '#faqs' },
-    { label: 'Contact', href: '#contact' },
-  ];
 
   const sourceConnectors = [
     {
@@ -93,79 +84,8 @@ export default function AiHowItWorksPage({ onNavigate }) {
 
   return (
     <div className="min-h-screen bg-white text-gray-900 flex flex-col font-text selection:bg-[#008767] selection:text-white">
-      {/* Navigation Header */}
-      <header className="w-full border-b border-gray-200 sticky top-0 z-30 bg-white/95 backdrop-blur-md shadow-sm">
-        <div className="max-w-7xl mx-auto px-6 sm:px-12 h-20 flex items-center justify-between">
-          <button
-            type="button"
-            onClick={() => onNavigate && onNavigate('home')}
-            className="text-gray-900 text-base font-bold tracking-wider uppercase cursor-pointer hover:opacity-80 transition-opacity flex items-center gap-2"
-          >
-            <div className="w-7 h-7 rounded bg-[#008767] flex items-center justify-center text-xs font-black text-white">
-              B
-            </div>
-            <span>LOGO HERE</span>
-          </button>
-
-          <nav className="hidden md:flex items-center space-x-8">
-            {navLinks.map((link) => (
-              <button
-                key={link.label}
-                type="button"
-                onClick={() => onNavigate && onNavigate(link.href.replace('#', ''))}
-                className={`text-sm font-semibold transition-colors duration-200 cursor-pointer ${
-                  link.active
-                    ? 'text-gray-900 border-b-2 border-[#008767] pb-1'
-                    : 'text-gray-500 hover:text-black'
-                }`}
-              >
-                {link.label}
-              </button>
-            ))}
-          </nav>
-
-          <div className="hidden sm:flex items-center gap-4">
-            <button
-              type="button"
-              onClick={() => onNavigate && onNavigate('get-started')}
-              className="px-5 py-2 rounded-full bg-[#008767] hover:bg-[#007559] text-white text-xs font-semibold tracking-wide transition-all shadow-[0_0_15px_rgba(0,135,103,0.3)] cursor-pointer"
-            >
-              Get Started
-            </button>
-          </div>
-
-          <div className="md:hidden flex items-center">
-            <button
-              type="button"
-              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="w-10 h-10 flex flex-col items-center justify-center gap-1.5 text-gray-700"
-              aria-label="Toggle Menu"
-            >
-              <span className={`w-5 h-0.5 bg-current transition-all ${mobileMenuOpen ? 'rotate-45 translate-y-2' : ''}`} />
-              <span className={`w-5 h-0.5 bg-current transition-all ${mobileMenuOpen ? 'opacity-0' : ''}`} />
-              <span className={`w-5 h-0.5 bg-current transition-all ${mobileMenuOpen ? '-rotate-45 -translate-y-2' : ''}`} />
-            </button>
-          </div>
-        </div>
-
-        {mobileMenuOpen && (
-          <div className="md:hidden bg-white border-b border-gray-200 px-6 py-6 space-y-3">
-            {navLinks.map((link) => (
-              <button
-                key={link.label}
-                type="button"
-                onClick={() => {
-                  setMobileMenuOpen(false);
-                  if (onNavigate) onNavigate(link.href.replace('#', ''));
-                }}
-                className="block w-full text-left text-base font-semibold text-gray-700 hover:text-black py-2"
-              >
-                {link.label}
-              </button>
-            ))}
-          </div>
-        )}
-      </header>
+      {/* Unified Professional Header */}
+      <Header currentPage="how-it-works" onNavigate={onNavigate} forceTheme="light" />
 
       {/* Hero Header */}
       <section className="w-full pt-16 pb-16 px-6 sm:px-10 lg:px-16 bg-white border-b border-gray-100">
